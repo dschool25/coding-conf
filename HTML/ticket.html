@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Your Coding Conf 2026 ticket.">
+  <title>Coding Conf 2026 | Your Ticket</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/style.css">
+  <!-- loaded in the head (no defer) so the redirect check runs before the page shows -->
+  <script src="../js/ticket.js"></script>
+</head>
+<body class="page-ticket">
+
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <div class="stars" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="Coding Conf home">
+        <img src="../assets/logo-mark.svg" alt="" width="32" height="32">
+        <span>Coding Conf</span>
+      </a>
+      <nav class="main-nav" aria-label="Main">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#schedule">Schedule</a></li>
+          <li><a href="login.html">Register</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="confirm" aria-labelledby="confirm-title">
+      <div class="container">
+
+        <ol class="steps" aria-label="Registration progress">
+          <li class="is-done">Your details</li>
+          <li class="is-active" aria-current="step">Your ticket</li>
+        </ol>
+
+        <!-- Master banner -->
+        <h1 id="confirm-title" class="confirm-title">
+          Congrats, <span class="gradient-text" id="banner-name">Attendee</span>!
+          Your ticket is ready.
+        </h1>
+        <p class="hero-lead" id="confirm-text">
+          Updates about the event will go to <strong class="accent" id="banner-email">your email</strong>.
+          Save or print this ticket and show it at the front desk on the day.
+        </p>
+
+        <!-- ===== Glass ticket ===== -->
+        <div class="ticket-stage">
+          <article class="ticket" id="ticket" aria-label="Conference ticket">
+
+            <div class="ticket-main">
+              <header class="ticket-head">
+                <img src="../assets/logo-mark.svg" alt="" width="40" height="40">
+                <div>
+                  <h2 class="ticket-brand">Coding Conf</h2>
+                  <p class="ticket-meta">
+                    <time datetime="2026-10-26">Oct 26, 2026</time>
+                    <span aria-hidden="true">/</span>
+                    Papine, Kgn
+                  </p>
+                </div>
+              </header>
+
+              <div class="ticket-person">
+                <img id="ticket-avatar" class="ticket-avatar" src="" alt="" width="64" height="64">
+                <div>
+                  <p class="ticket-name" id="ticket-name">Attendee</p>
+                  <a class="ticket-github" id="ticket-github" href="#" target="_blank" rel="noopener">
+                    <img src="../assets/icon-github.svg" alt="" width="20" height="20">
+                    <span id="ticket-github-text">@username</span>
+                    <span class="visually-hidden">(opens GitHub in a new tab)</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tear-off stub with the serial number -->
+            <div class="ticket-stub">
+              <p class="ticket-serial">
+                <span class="visually-hidden">Ticket number</span>
+                <span id="ticket-serial">#00000</span>
+              </p>
+            </div>
+
+          </article>
+        </div>
+
+        <!-- Extra actions -->
+        <div class="ticket-actions">
+          <button type="button" class="btn" id="print-btn">Print / Save as PDF</button>
+          <button type="button" class="btn btn-outline" id="copy-btn">Copy ticket number</button>
+          <button type="button" class="btn btn-outline" id="new-btn">Register someone else</button>
+        </div>
+        <p class="copy-status" id="copy-status" aria-live="polite"></p>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>&copy; 2026 Coding Conf &middot; Papine, Kingston, Jamaica</p>
+      <p><a href="index.html">Back to home</a></p>
+    </div>
+  </footer>
+
+</body>
+</html>

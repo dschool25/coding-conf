@@ -1,0 +1,1134 @@
+/* =========================================================
+   Coding Conf 2026 - main stylesheet
+   CIT2011 Web Programming - IA#2
+
+   Contents
+   1.  Custom properties (theme)
+   2.  Base / reset
+   3.  Background (stars + squiggle)
+   4.  Layout helpers
+   5.  Header + navigation
+   6.  Buttons
+   7.  Landing page sections
+   8.  Registration form
+   9.  Ticket page + glass ticket
+   10. Footer
+   11. Media queries
+   12. Reduced motion + print
+   ========================================================= */
+
+
+/* ---------- 1. Custom properties ---------- */
+:root {
+  /* colours */
+  --clr-space-900: #0d082d;
+  --clr-space-800: #160f3f;
+  --clr-space-700: #241a5c;
+  --clr-neutral-0: #ffffff;
+  --clr-neutral-300: #d1d0d5;
+  --clr-neutral-500: #8784a5;
+  --clr-orange-500: #f57463;
+  --clr-orange-700: #e1604f;
+  --clr-purple-400: #c67cf2;
+  --clr-error: #ff8a7a;
+
+  --grad-text: linear-gradient(90deg, var(--clr-orange-500), var(--clr-purple-400), var(--clr-orange-500));
+
+  /* glass */
+  --glass-bg: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.35);
+  --glass-blur: 14px;
+
+  /* fluid type - clamp(min, preferred, max) */
+  --fs-300: clamp(0.85rem, 0.8rem + 0.2vw, 0.95rem);
+  --fs-400: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --fs-500: clamp(1.15rem, 1rem + 0.6vw, 1.5rem);
+  --fs-600: clamp(1.5rem, 1.2rem + 1.4vw, 2.25rem);
+  --fs-700: clamp(2rem, 1.4rem + 3vw, 3.75rem);
+
+  /* spacing + shape */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: clamp(2.5rem, 2rem + 3vw, 5rem);
+  --radius-sm: 0.5rem;
+  --radius-md: 0.9rem;
+  --radius-lg: 1.25rem;
+
+  --ff-body: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+  --ff-mono: "Cascadia Code", Consolas, "Courier New", monospace;
+
+  --focus-ring: 3px solid var(--clr-orange-500);
+  --ease: cubic-bezier(.2, .7, .3, 1);
+}
+
+
+/* ---------- 2. Base / reset ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:where(body, h1, h2, h3, p, ul, ol, figure) {
+  margin: 0;
+}
+
+:where(ul, ol)[class] {
+  padding: 0;
+  list-style: none;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 6rem; /* stops the sticky header covering focused or linked content */
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--ff-body);
+  font-size: var(--fs-400);
+  line-height: 1.6;
+  color: var(--clr-neutral-300);
+  background-color: var(--clr-space-900);
+  background-image:
+    radial-gradient(ellipse at 15% 0%, rgba(198, 124, 242, 0.25), transparent 55%),
+    radial-gradient(ellipse at 90% 30%, rgba(245, 116, 99, 0.15), transparent 50%),
+    linear-gradient(180deg, var(--clr-space-800), var(--clr-space-900) 70%);
+  background-attachment: fixed;
+  overflow-x: hidden;
+}
+
+/* all headings share font + colour */
+:is(h1, h2, h3) {
+  color: var(--clr-neutral-0);
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+h1 { font-size: var(--fs-700); }
+h2 { font-size: var(--fs-600); margin-bottom: var(--space-sm); }
+h3 { font-size: var(--fs-500); }
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* make sure the hidden attribute always wins over display rules */
+[hidden] {
+  display: none !important;
+}
+
+a {
+  color: var(--clr-orange-500);
+}
+
+/* one focus style for every interactive element */
+:is(a, button, input, summary, [tabindex]):focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 3px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: var(--space-sm);
+  z-index: 100;
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--clr-orange-500);
+  color: var(--clr-space-900);
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  transition: top 0.2s;
+}
+
+.skip-link:focus {
+  top: var(--space-sm);
+}
+
+.gradient-text {
+  background: var(--grad-text);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 6s linear infinite;
+}
+
+.accent {
+  color: var(--clr-orange-500);
+}
+
+@keyframes shimmer {
+  to { background-position: 200% center; }
+}
+
+
+/* ---------- 3. Background ---------- */
+/* little dots made from layered radial gradients, they slowly twinkle */
+.stars {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(1px 1px at 10% 20%, #fff, transparent),
+    radial-gradient(1px 1px at 30% 70%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 55% 15%, #fff, transparent),
+    radial-gradient(1px 1px at 70% 55%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 85% 80%, #fff, transparent),
+    radial-gradient(1px 1px at 45% 90%, #fff, transparent),
+    radial-gradient(1px 1px at 92% 10%, #fff, transparent),
+    radial-gradient(1px 1px at 20% 45%, #fff, transparent);
+  background-size: 420px 420px;
+  opacity: 0.6;
+  animation: twinkle 5s ease-in-out infinite alternate;
+}
+
+/* squiggle line across the bottom of the screen */
+.stars::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 220px;
+  background: url("../assets/pattern-squiggle.svg") center bottom / cover no-repeat;
+  opacity: 0.8;
+}
+
+@keyframes twinkle {
+  from { opacity: 0.35; }
+  to   { opacity: 0.75; }
+}
+
+
+/* ---------- 4. Layout helpers ---------- */
+.container {
+  width: min(100% - 2.5rem, 70rem);
+  margin-inline: auto;
+}
+
+.container.narrow {
+  width: min(100% - 2.5rem, 38rem);
+}
+
+main {
+  flex: 1;
+}
+
+.section {
+  padding-block: var(--space-lg);
+}
+
+.section-intro {
+  margin-bottom: var(--space-md);
+  color: var(--clr-neutral-500);
+}
+
+/* old school clearfix for the floated badge in About */
+.clearfix::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+
+/* ---------- 5. Header + navigation ---------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  padding-block: var(--space-sm);
+  background: rgba(13, 8, 45, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--clr-neutral-0);
+  font-weight: 800;
+  font-size: var(--fs-500);
+  text-decoration: none;
+}
+
+.brand img {
+  transition: transform 0.4s var(--ease);
+}
+
+.brand:hover img {
+  transform: rotate(-12deg) scale(1.1);
+}
+
+.main-nav ul {
+  padding: 0;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.25rem;
+}
+
+/* nav links, but not the button-style one */
+.main-nav a:not(.btn) {
+  position: relative;
+  color: var(--clr-neutral-300);
+  text-decoration: none;
+  padding-block: 0.25rem;
+}
+
+.main-nav a:not(.btn)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--clr-orange-500);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s var(--ease);
+}
+
+.main-nav a:not(.btn):is(:hover, :focus-visible, [aria-current="page"])::after {
+  transform: scaleX(1);
+}
+
+.main-nav a[aria-current="page"] {
+  color: var(--clr-neutral-0);
+}
+
+
+/* ---------- 6. Buttons ---------- */
+.btn {
+  display: inline-block;
+  padding: 0.85em 1.6em;
+  border: 2px solid var(--clr-orange-500);
+  border-radius: var(--radius-sm);
+  background: var(--clr-orange-500);
+  color: var(--clr-space-900);
+  font: inherit;
+  font-weight: 800;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 4px 0 var(--clr-orange-700);
+  transition: transform 0.15s, box-shadow 0.15s, background-color 0.2s;
+}
+
+.btn:is(:hover, :focus-visible) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 var(--clr-orange-700), 0 10px 25px rgba(245, 116, 99, 0.35);
+}
+
+.btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 var(--clr-orange-700);
+}
+
+.btn-small { padding: 0.45em 1em; font-size: var(--fs-300); box-shadow: 0 3px 0 var(--clr-orange-700); }
+.btn-large { font-size: var(--fs-500); }
+.btn-block { width: 100%; }
+
+.btn-outline {
+  background: transparent;
+  color: var(--clr-neutral-0);
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: none;
+}
+
+.btn-outline:is(:hover, :focus-visible) {
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: none;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.btn-ghost {
+  padding: 0.25em 0.6em;
+  border: 0;
+  border-radius: 0.3rem;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--clr-neutral-300);
+  font: inherit;
+  font-size: var(--fs-300);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+
+/* ---------- 7. Landing page ---------- */
+.hero {
+  padding-block: var(--space-lg) calc(var(--space-lg) * 1.3);
+  text-align: center;
+}
+
+.hero h1 {
+  max-width: 18ch;
+  margin-inline: auto;
+}
+
+.eyebrow {
+  display: inline-block;
+  margin-bottom: var(--space-sm);
+  padding: 0.3em 0.9em;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 99px;
+  font-family: var(--ff-mono);
+  font-size: var(--fs-300);
+  letter-spacing: 0.05em;
+}
+
+.hero-lead {
+  max-width: 42ch;
+  margin: var(--space-sm) auto var(--space-md);
+  font-size: var(--fs-500);
+}
+
+.event-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.event-meta li {
+  display: flex;
+  flex-direction: column;
+  min-width: 10rem;
+  padding: 0.75rem 1.25rem;
+  background: var(--glass-bg);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-md);
+  color: var(--clr-neutral-0);
+  font-weight: 700;
+}
+
+.meta-label {
+  font-family: var(--ff-mono);
+  font-size: var(--fs-300);
+  font-weight: 400;
+  color: var(--clr-neutral-500);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* About - floated badge so text wraps beside it */
+.about-badge {
+  float: right;
+  width: 9rem;
+  margin: 0 0 var(--space-sm) var(--space-md);
+  padding: var(--space-sm);
+  text-align: center;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  animation: float 6s ease-in-out infinite;
+}
+
+.about-badge img {
+  margin-inline: auto;
+}
+
+.about-badge figcaption {
+  margin-top: 0.4rem;
+  font-family: var(--ff-mono);
+  font-size: var(--fs-300);
+}
+
+.about p + p {
+  margin-top: var(--space-sm);
+}
+
+@keyframes float {
+  50% { transform: translateY(-8px); }
+}
+
+/* Schedule timeline - grid with a time column and a content column */
+.timeline {
+  position: relative;
+  display: grid;
+  gap: var(--space-md);
+  padding-left: var(--space-md);
+  border-left: 2px dashed rgba(255, 255, 255, 0.2);
+}
+
+.timeline li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 7rem 1fr;
+  gap: var(--space-sm);
+  align-items: start;
+}
+
+/* dot on the line */
+.timeline li::before {
+  content: "";
+  position: absolute;
+  left: calc(var(--space-md) * -1 - 7px);
+  top: 0.45rem;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--clr-orange-500);
+  box-shadow: 0 0 0 4px rgba(245, 116, 99, 0.25);
+}
+
+.timeline time {
+  font-family: var(--ff-mono);
+  color: var(--clr-orange-500);
+  font-weight: 700;
+}
+
+.timeline p {
+  color: var(--clr-neutral-500);
+}
+
+/* Track cards */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: var(--space-md);
+}
+
+.card {
+  position: relative;
+  padding: var(--space-md);
+  background: var(--glass-bg);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-lg);
+  transition: transform 0.3s var(--ease), border-color 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  border-color: var(--clr-purple-400);
+}
+
+.card h3 {
+  margin-block: 0.75rem 0.4rem;
+}
+
+.card-tag {
+  display: inline-block;
+  padding: 0.15em 0.6em;
+  border-radius: 0.3rem;
+  background: rgba(198, 124, 242, 0.2);
+  color: var(--clr-purple-400);
+  font-family: var(--ff-mono);
+  font-size: var(--fs-300);
+}
+
+.card-featured {
+  border-color: var(--clr-orange-500);
+}
+
+.card-featured .card-tag {
+  background: rgba(245, 116, 99, 0.2);
+  color: var(--clr-orange-500);
+}
+
+/* FAQ */
+.faq-item {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.faq-item summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-sm);
+  padding-block: var(--space-sm);
+  color: var(--clr-neutral-0);
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item summary::after {
+  content: "+";
+  font-family: var(--ff-mono);
+  font-size: 1.4rem;
+  color: var(--clr-orange-500);
+  transition: transform 0.25s;
+}
+
+.faq-item[open] summary::after {
+  transform: rotate(45deg);
+}
+
+.faq-item p {
+  padding-bottom: var(--space-sm);
+}
+
+/* CTA */
+.cta-inner {
+  padding: var(--space-lg) var(--space-md);
+  text-align: center;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+
+.cta-inner p {
+  margin-bottom: var(--space-md);
+}
+
+
+/* ---------- 8. Registration form ---------- */
+:is(.register, .confirm) {
+  padding-block: var(--space-lg);
+  text-align: center;
+}
+
+.steps {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+  font-family: var(--ff-mono);
+  font-size: var(--fs-300);
+  counter-reset: step;
+}
+
+.steps li {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--clr-neutral-500);
+  counter-increment: step;
+}
+
+.steps li::before {
+  content: counter(step);
+  display: grid;
+  place-items: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+}
+
+.steps :is(.is-active, .is-done) {
+  color: var(--clr-neutral-0);
+}
+
+.steps .is-active::before {
+  background: var(--clr-orange-500);
+  border-color: var(--clr-orange-500);
+  color: var(--clr-space-900);
+}
+
+.steps .is-done::before {
+  content: "\2713";
+  border-color: var(--clr-purple-400);
+  color: var(--clr-purple-400);
+}
+
+.register-form {
+  display: grid;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+  text-align: left;
+}
+
+.field {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.label {
+  color: var(--clr-neutral-0);
+  font-weight: 600;
+}
+
+/* text-like inputs (not the hidden file input) */
+.field input:not([type="file"]) {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--clr-neutral-500);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--clr-neutral-0);
+  font: inherit;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.field input:not([type="file"]):hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.field input:not([type="file"]):focus-visible {
+  border-color: var(--clr-orange-500);
+}
+
+.field input::placeholder {
+  color: var(--clr-neutral-500);
+}
+
+/* :has() lets the whole field react when its input is invalid */
+.field:has([aria-invalid="true"]) :is(input:not([type="file"]), .drop-zone) {
+  border-color: var(--clr-error);
+  animation: shake 0.3s;
+}
+
+.field:has([aria-invalid="true"]) .hint {
+  display: none;
+}
+
+.error {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--clr-error);
+  font-size: var(--fs-300);
+}
+
+.error:empty {
+  display: none;
+}
+
+.error::before {
+  content: "!";
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+  border: 1.3px solid currentColor;
+  border-radius: 50%;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.hint {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: var(--fs-300);
+  color: var(--clr-neutral-500);
+}
+
+@keyframes shake {
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+/* Drop zone for the avatar */
+.drop-zone {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 9.5rem;
+  padding: var(--space-sm);
+  border: 2px dashed var(--clr-neutral-500);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.07);
+  text-align: center;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+/* input is invisible but still focusable and clickable */
+.drop-zone input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* once an image is chosen the input should not cover the buttons */
+.drop-zone:has(.drop-filled:not([hidden])) input[type="file"] {
+  pointer-events: none;
+}
+
+.drop-zone:is(:hover, .is-dragging) {
+  border-color: var(--clr-purple-400);
+  background: rgba(198, 124, 242, 0.1);
+}
+
+/* show the focus ring on the box when the hidden input is focused */
+.drop-zone:has(input:focus-visible) {
+  outline: var(--focus-ring);
+  outline-offset: 3px;
+}
+
+.drop-empty {
+  display: grid;
+  place-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+}
+
+.drop-empty img,
+.drop-filled img {
+  padding: 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.drop-empty img {
+  width: 3.25rem;
+  height: 3.25rem;
+}
+
+.drop-filled img {
+  padding: 0;
+  width: 4rem;
+  height: 4rem;
+  object-fit: cover;
+  margin-inline: auto;
+}
+
+.drop-actions {
+  position: relative; /* sit above the file input */
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.form-summary {
+  margin-top: var(--space-md);
+  padding: var(--space-sm);
+  border: 1px solid var(--clr-error);
+  border-radius: var(--radius-md);
+  background: rgba(255, 138, 122, 0.1);
+  color: var(--clr-neutral-0);
+  text-align: left;
+}
+
+.form-summary ul {
+  margin-top: 0.4rem;
+  padding-left: 1.2rem;
+}
+
+.form-summary a {
+  color: var(--clr-error);
+}
+
+
+/* ---------- 9. Ticket page ---------- */
+.confirm-title {
+  max-width: 20ch;
+  margin-inline: auto;
+}
+
+.ticket-stage {
+  margin-block: var(--space-lg) var(--space-md);
+  perspective: 1000px;
+}
+
+/* the glass ticket itself */
+.ticket {
+  --notch: 1.4rem;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  width: min(100%, 37.5rem);
+  min-height: 17rem;
+  margin-inline: auto;
+  text-align: left;
+  background:
+    url("../assets/pattern-ticket.svg") center / cover no-repeat,
+    linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.04));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transform-style: preserve-3d;
+  transition: transform 0.2s ease-out;
+  /* "backwards" (not "both") so the JS tilt can change transform after the animation */
+  animation: ticket-in 0.9s var(--ease) backwards;
+}
+
+/* glow that follows the mouse (ticket.js sets --mx / --my) */
+.ticket::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(circle at var(--mx, 50%) var(--my, 0%), rgba(255, 255, 255, 0.18), transparent 45%);
+}
+
+@keyframes ticket-in {
+  from { opacity: 0; transform: translateY(40px) rotateX(25deg); }
+  to   { opacity: 1; transform: none; }
+}
+
+.ticket-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: var(--space-md);
+}
+
+.ticket-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+}
+
+.ticket-brand {
+  margin: 0;
+  font-size: var(--fs-600);
+}
+
+.ticket-meta {
+  margin-top: 0.3rem;
+  font-family: var(--ff-mono);
+  font-size: var(--fs-300);
+  color: var(--clr-neutral-300);
+}
+
+.ticket-person {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ticket-avatar {
+  width: clamp(3.5rem, 3rem + 2vw, 5rem);
+  height: clamp(3.5rem, 3rem + 2vw, 5rem);
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.ticket-name {
+  color: var(--clr-neutral-0);
+  font-size: var(--fs-500);
+  font-weight: 700;
+  word-break: break-word;
+}
+
+.ticket-github {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--clr-neutral-300);
+  text-decoration: none;
+}
+
+.ticket-github:hover {
+  color: var(--clr-neutral-0);
+  text-decoration: underline;
+}
+
+/* stub on the right with dashed perforation */
+.ticket-stub {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 5rem;
+  border-left: 2px dashed rgba(255, 255, 255, 0.35);
+}
+
+/* half circle notches cut out of the top and bottom */
+.ticket-stub::before,
+.ticket-stub::after {
+  content: "";
+  position: absolute;
+  left: calc(var(--notch) / -2 - 1px);
+  width: var(--notch);
+  height: var(--notch);
+  border-radius: 50%;
+  background: var(--clr-space-900);
+  border: 1px solid var(--glass-border);
+}
+
+.ticket-stub::before { top: calc(var(--notch) / -2 - 1px); }
+.ticket-stub::after  { bottom: calc(var(--notch) / -2 - 1px); }
+
+.ticket-serial {
+  writing-mode: vertical-rl;
+  font-family: var(--ff-mono);
+  font-size: var(--fs-600);
+  color: var(--clr-neutral-500);
+  letter-spacing: 0.08em;
+}
+
+.ticket-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-sm);
+}
+
+.copy-status {
+  min-height: 1.6em;
+  margin-top: var(--space-xs);
+  font-family: var(--ff-mono);
+  font-size: var(--fs-300);
+  color: var(--clr-purple-400);
+}
+
+
+/* ---------- 10. Footer ---------- */
+.site-footer {
+  padding-block: var(--space-md);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(13, 8, 45, 0.6);
+  font-size: var(--fs-300);
+  color: var(--clr-neutral-500);
+}
+
+.footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-xs);
+}
+
+.site-footer a {
+  color: var(--clr-neutral-300);
+}
+
+
+/* ---------- 11. Media queries ---------- */
+
+/* small phones */
+@media (max-width: 30em) {
+  .header-inner {
+    justify-content: center;
+  }
+
+  .about-badge {
+    float: none;
+    margin: 0 auto var(--space-md);
+  }
+
+  .timeline li {
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
+  }
+
+  .event-meta li {
+    flex: 1 1 100%;
+  }
+
+  /* stack the ticket: stub goes underneath */
+  .ticket {
+    grid-template-columns: 1fr;
+  }
+
+  .ticket-stub {
+    width: auto;
+    padding-block: 0.75rem;
+    border-left: 0;
+    border-top: 2px dashed rgba(255, 255, 255, 0.35);
+  }
+
+  .ticket-stub::before,
+  .ticket-stub::after {
+    top: calc(var(--notch) / -2 - 1px);
+    bottom: auto;
+  }
+
+  .ticket-stub::before { left: calc(var(--notch) / -2 - 1px); }
+  .ticket-stub::after  { left: auto; right: calc(var(--notch) / -2 - 1px); }
+
+  .ticket-serial {
+    writing-mode: horizontal-tb;
+  }
+
+  .ticket-actions .btn {
+    flex: 1 1 100%;
+  }
+}
+
+/* tablets and up */
+@media (min-width: 48em) {
+  .section:where(#schedule, #faq) {
+    padding-block: calc(var(--space-lg) * 1.2);
+  }
+
+  .timeline {
+    max-width: 48rem;
+  }
+
+  .timeline li {
+    grid-template-columns: 8rem 1fr;
+  }
+}
+
+/* large screens */
+@media (min-width: 90em) {
+  :root {
+    font-size: 112.5%;
+  }
+}
+
+
+/* ---------- 12. Reduced motion + print ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media print {
+  :is(.site-header, .site-footer, .ticket-actions, .copy-status, .steps, .stars, .skip-link) {
+    display: none !important;
+  }
+
+  body {
+    background: var(--clr-space-900);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .ticket {
+    animation: none;
+    transform: none !important;
+    box-shadow: none;
+  }
+}

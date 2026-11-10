@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="280" viewBox="0 0 600 280" fill="none">
+  <!-- faint circuit lines that sit behind the ticket content -->
+  <g stroke="#ffffff" stroke-opacity=".08" stroke-width="1.5">
+    <path d="M0 60h120l30 30h140"/>
+    <path d="M0 220h80l40-40h160l30 30h120"/>
+    <path d="M330 0v50l30 30h240"/>
+    <circle cx="290" cy="90" r="4"/>
+    <circle cx="430" cy="210" r="4"/>
+    <circle cx="600" cy="80" r="4"/>
+  </g>
+</svg>

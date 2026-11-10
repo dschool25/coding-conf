@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Coding Conf 2026 - a one day developer conference in Papine, Kingston on October 26, 2026.">
+  <title>Coding Conf 2026 | Home</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="page-home">
+
+  <!-- Skip link so keyboard users can jump past the nav -->
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <!-- Decorative star field (hidden from screen readers) -->
+  <div class="stars" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="Coding Conf home">
+        <img src="../assets/logo-mark.svg" alt="" width="32" height="32">
+        <span>Coding Conf</span>
+      </a>
+
+      <nav class="main-nav" aria-label="Main">
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#schedule">Schedule</a></li>
+          <li><a href="#tracks">Tracks</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a class="btn btn-small" href="login.html">Register</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ===== Hero ===== -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container">
+        <p class="eyebrow">Edition 04 &middot; In person</p>
+        <h1 id="hero-title">
+          Your journey to <span class="gradient-text">Coding Conf 2026</span> starts here!
+        </h1>
+        <p class="hero-lead">
+          One day of talks, workshops and late night hacking with developers from
+          across the Caribbean. Grab your free ticket before the seats run out.
+        </p>
+
+        <ul class="event-meta" aria-label="Event details">
+          <li>
+            <span class="meta-label">Date</span>
+            <time datetime="2026-10-26">October 26, 2026</time>
+          </li>
+          <li>
+            <span class="meta-label">Location</span>
+            <span>Papine, Kgn</span>
+          </li>
+          <li>
+            <span class="meta-label">Seats left</span>
+            <span id="seat-count">148</span>
+          </li>
+        </ul>
+
+        <a class="btn btn-large" href="login.html">Register Now</a>
+      </div>
+    </section>
+
+    <!-- ===== About ===== -->
+    <section id="about" class="section about" aria-labelledby="about-title">
+      <div class="container clearfix">
+        <!-- floated badge, wraps the paragraph text on wider screens -->
+        <figure class="about-badge">
+          <img src="../assets/logo-mark.svg" alt="Coding Conf logo" width="96" height="96">
+          <figcaption>Since 2023</figcaption>
+        </figure>
+
+        <h2 id="about-title">What is Coding Conf?</h2>
+        <p>
+          Coding Conf started as a small meetup in a lecture room and has grown into a
+          full day event for students, junior devs and people who have been shipping code
+          for years. The focus is practical: you should leave with something you can use
+          in your own projects the next morning.
+        </p>
+        <p>
+          Registration is free. Fill in the form, upload a profile photo and you will get a
+          personal digital ticket with your own seat number. Bring it on the day (on your
+          phone is fine) and show it at the front desk.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===== Schedule ===== -->
+    <section id="schedule" class="section" aria-labelledby="schedule-title">
+      <div class="container">
+        <h2 id="schedule-title">Schedule</h2>
+        <p class="section-intro">All times are local (EST). Rooms will be posted at check in.</p>
+
+        <ol class="timeline">
+          <li>
+            <time datetime="2026-10-26T08:00">8:00 AM</time>
+            <div>
+              <h3>Check in &amp; breakfast</h3>
+              <p>Pick up your badge and a coffee.</p>
+            </div>
+          </li>
+          <li>
+            <time datetime="2026-10-26T09:30">9:30 AM</time>
+            <div>
+              <h3>Opening keynote</h3>
+              <p>Building for the web in places with slow internet.</p>
+            </div>
+          </li>
+          <li>
+            <time datetime="2026-10-26T11:00">11:00 AM</time>
+            <div>
+              <h3>Workshops (round 1)</h3>
+              <p>Pick one track below. Laptops needed.</p>
+            </div>
+          </li>
+          <li>
+            <time datetime="2026-10-26T13:00">1:00 PM</time>
+            <div>
+              <h3>Lunch &amp; sponsor booths</h3>
+              <p>Jerk chicken and veggie options provided.</p>
+            </div>
+          </li>
+          <li>
+            <time datetime="2026-10-26T14:30">2:30 PM</time>
+            <div>
+              <h3>Lightning talks</h3>
+              <p>Five minute talks from attendees. Sign up on the day.</p>
+            </div>
+          </li>
+          <li>
+            <time datetime="2026-10-26T17:00">5:00 PM</time>
+            <div>
+              <h3>Mini hackathon</h3>
+              <p>Three hours, small teams, prizes for the top three.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ===== Tracks ===== -->
+    <section id="tracks" class="section" aria-labelledby="tracks-title">
+      <div class="container">
+        <h2 id="tracks-title">Workshop tracks</h2>
+
+        <div class="card-grid">
+          <article class="card">
+            <span class="card-tag">Beginner</span>
+            <h3>Web foundations</h3>
+            <p>Semantic HTML, modern CSS layout and making pages work on every screen.</p>
+          </article>
+          <article class="card">
+            <span class="card-tag">Intermediate</span>
+            <h3>JavaScript in the browser</h3>
+            <p>Events, forms, the DOM and saving data with web storage.</p>
+          </article>
+          <article class="card">
+            <span class="card-tag">All levels</span>
+            <h3>Accessibility lab</h3>
+            <p>Test real sites with a keyboard and a screen reader, then fix what breaks.</p>
+          </article>
+          <article class="card card-featured">
+            <span class="card-tag">New</span>
+            <h3>Git &amp; GitHub</h3>
+            <p>Branches, pull requests and putting your portfolio online for free.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FAQ (details/summary works with the keyboard out of the box) ===== -->
+    <section id="faq" class="section" aria-labelledby="faq-title">
+      <div class="container narrow">
+        <h2 id="faq-title">Questions</h2>
+
+        <details class="faq-item">
+          <summary>Does it cost anything?</summary>
+          <p>No. Tickets are free, but you need to register so we can plan seating and food.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Why do you need my GitHub username?</summary>
+          <p>It goes on your ticket and on the attendee wall so people can find your work after the event.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What kind of photo should I upload?</summary>
+          <p>A clear JPG or PNG of your face, under 500KB. It is printed on your ticket.</p>
+        </details>
+        <details class="faq-item">
+          <summary>I lost my ticket. What now?</summary>
+          <p>Register again with the same email and we will match it at the desk.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- ===== Call to action ===== -->
+    <section class="section cta" aria-labelledby="cta-title">
+      <div class="container cta-inner">
+        <h2 id="cta-title">Ready to join us?</h2>
+        <p>It takes about a minute.</p>
+        <a class="btn btn-large" href="login.html">Register Now</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>&copy; 2026 Coding Conf &middot; Papine, Kingston, Jamaica</p>
+      <p>CIT2011 Web Programming &middot; IA#2</p>
+    </div>
+  </footer>
+
+</body>
+</html>
